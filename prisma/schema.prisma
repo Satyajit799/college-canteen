@@ -1,0 +1,139 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../apps/api/src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Course {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  code      String?   @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  students  Student[]
+}
+
+model AcademicYear {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  students  Student[]
+}
+
+model Student {
+  id             Int      @id @default(autoincrement())
+  registrationNo String   @unique
+  name           String?
+  courseId       Int
+  academicYearId Int
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  bookings Booking[]
+  account  StudentAccount?
+
+  academicYear AcademicYear @relation(fields: [academicYearId], references: [id])
+  course       Course       @relation(fields: [courseId], references: [id])
+
+  @@index([courseId, academicYearId])
+}
+
+model StudentAccount {
+  id           Int      @id @default(autoincrement())
+  studentId    Int      @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  student Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+}
+
+model Admin {
+  id           Int      @id @default(autoincrement())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         AdminRole @default(ADMIN)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([email])
+}
+
+model Booking {
+  id        Int           @id @default(autoincrement())
+  studentId Int
+  mealDate  DateTime
+  foodType  FoodType
+  amount    Decimal       @db.Decimal(10, 2)
+  status    BookingStatus @default(PENDING)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  student   Student       @relation(fields: [studentId], references: [id])
+  payment   Payment?
+  qrCode    QRCode?
+
+  @@unique([studentId, mealDate])
+  @@index([mealDate])
+  @@index([foodType, mealDate])
+  @@index([status, mealDate])
+}
+
+model Payment {
+  id             Int           @id @default(autoincrement())
+  bookingId      Int           @unique
+  amount         Decimal
+  status         PaymentStatus
+  gatewayOrderId String?       @unique
+  transactionId  String?
+  paymentMethod  String?
+  paidAt         DateTime?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  booking Booking @relation(fields: [bookingId], references: [id])
+}
+
+model QRCode {
+  id         Int       @id @default(autoincrement())
+  qrToken    String?   @unique
+  qrUsedAt   DateTime?
+  bookingId  Int       @unique
+  token      String    @unique
+  redeemed   Boolean   @default(false)
+  redeemedAt DateTime?
+  createdAt  DateTime  @default(now())
+  booking    Booking   @relation(fields: [bookingId], references: [id])
+
+  @@index([redeemed])
+}
+
+enum AdminRole {
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum FoodType {
+  VEG
+  NON_VEG
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  EXPIRED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}

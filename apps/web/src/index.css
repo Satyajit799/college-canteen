@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@media print {
+  /* Hide everything that should not appear on paper */
+  body {
+    background: white !important;
+  }
+
+  /* Hide admin navigation */
+  aside {
+    display: none !important;
+  }
+
+  /* Remove the left margin created by the sidebar */
+  main {
+    margin-left: 0 !important;
+  }
+
+  /* Hide buttons and date controls */
+  button,
+  input {
+    display: none !important;
+  }
+
+  /* Remove screen-only styling */
+  #printout-content {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  #printout-content > div {
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* Keep table rows together */
+  tr {
+    page-break-inside: avoid;
+  }
+
+  /* Avoid breaking section headers from their tables */
+  h2,
+  h3 {
+    page-break-after: avoid;
+  }
+
+  /* Make the report use the paper efficiently */
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+}
