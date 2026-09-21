@@ -41,7 +41,7 @@ function AdminContent() {
         <div className="min-h-screen bg-slate-100">
 
             {/* Mobile Header */}
-            <header className="sticky top-0 z-40 flex items-center justify-between border-b border-slate-200 bg-slate-900 px-4 py-3 text-white lg:hidden">
+            <header className="fixed left-0 right-0 top-0 z-[100] flex items-center justify-between border-b border-slate-700 bg-slate-900 px-4 py-3 text-white lg:hidden">
 
                 <div>
                     <h1 className="text-lg font-bold">
@@ -67,15 +67,15 @@ function AdminContent() {
 
             {/* Mobile Navigation */}
             {mobileMenuOpen && (
-                <div className="sticky top-16.25 z-30 border-b border-slate-200 bg-slate-900 px-4 pb-4 lg:hidden">
+                <div className="fixed left-0 right-0 top-[65px] z-[90] border-b border-slate-700 bg-slate-900 px-4 pb-4 shadow-lg lg:hidden">
 
                     <nav className="space-y-2">
 
                         <button
                             onClick={() => navigate("dashboard")}
                             className={`w-full rounded-lg px-4 py-3 text-left text-sm font-medium transition ${page === "dashboard"
-                                    ? "bg-white text-slate-900"
-                                    : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                                ? "bg-white text-slate-900"
+                                : "text-slate-300 hover:bg-slate-800 hover:text-white"
                                 }`}
                         >
                             Dashboard
@@ -84,8 +84,8 @@ function AdminContent() {
                         <button
                             onClick={() => navigate("bookings")}
                             className={`w-full rounded-lg px-4 py-3 text-left text-sm font-medium transition ${page === "bookings"
-                                    ? "bg-white text-slate-900"
-                                    : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                                ? "bg-white text-slate-900"
+                                : "text-slate-300 hover:bg-slate-800 hover:text-white"
                                 }`}
                         >
                             Bookings
@@ -94,8 +94,8 @@ function AdminContent() {
                         <button
                             onClick={() => navigate("qr")}
                             className={`w-full rounded-lg px-4 py-3 text-left text-sm font-medium transition ${page === "qr"
-                                    ? "bg-white text-slate-900"
-                                    : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                                ? "bg-white text-slate-900"
+                                : "text-slate-300 hover:bg-slate-800 hover:text-white"
                                 }`}
                         >
                             QR Scanner
@@ -104,8 +104,8 @@ function AdminContent() {
                         <button
                             onClick={() => navigate("printout")}
                             className={`w-full rounded-lg px-4 py-3 text-left text-sm font-medium transition ${page === "printout"
-                                    ? "bg-white text-slate-900"
-                                    : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                                ? "bg-white text-slate-900"
+                                : "text-slate-300 hover:bg-slate-800 hover:text-white"
                                 }`}
                         >
                             Printout
@@ -114,8 +114,8 @@ function AdminContent() {
                         <button
                             onClick={() => navigate("profile")}
                             className={`w-full rounded-lg px-4 py-3 text-left text-sm font-medium transition ${page === "profile"
-                                    ? "bg-white text-slate-900"
-                                    : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                                ? "bg-white text-slate-900"
+                                : "text-slate-300 hover:bg-slate-800 hover:text-white"
                                 }`}
                         >
                             Profile
@@ -154,8 +154,8 @@ function AdminContent() {
                         <button
                             onClick={() => navigate("dashboard")}
                             className={`mb-2 w-full rounded-lg px-4 py-3 text-left text-sm font-medium transition ${page === "dashboard"
-                                    ? "bg-white text-slate-900"
-                                    : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                                ? "bg-white text-slate-900"
+                                : "text-slate-300 hover:bg-slate-800 hover:text-white"
                                 }`}
                         >
                             Dashboard
@@ -164,8 +164,8 @@ function AdminContent() {
                         <button
                             onClick={() => navigate("bookings")}
                             className={`mb-2 w-full rounded-lg px-4 py-3 text-left text-sm font-medium transition ${page === "bookings"
-                                    ? "bg-white text-slate-900"
-                                    : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                                ? "bg-white text-slate-900"
+                                : "text-slate-300 hover:bg-slate-800 hover:text-white"
                                 }`}
                         >
                             Bookings
@@ -174,8 +174,8 @@ function AdminContent() {
                         <button
                             onClick={() => navigate("qr")}
                             className={`mb-2 w-full rounded-lg px-4 py-3 text-left text-sm font-medium transition ${page === "qr"
-                                    ? "bg-white text-slate-900"
-                                    : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                                ? "bg-white text-slate-900"
+                                : "text-slate-300 hover:bg-slate-800 hover:text-white"
                                 }`}
                         >
                             QR Scanner
@@ -184,8 +184,8 @@ function AdminContent() {
                         <button
                             onClick={() => navigate("printout")}
                             className={`mb-2 w-full rounded-lg px-4 py-3 text-left text-sm font-medium transition ${page === "printout"
-                                    ? "bg-white text-slate-900"
-                                    : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                                ? "bg-white text-slate-900"
+                                : "text-slate-300 hover:bg-slate-800 hover:text-white"
                                 }`}
                         >
                             Printout
@@ -194,8 +194,8 @@ function AdminContent() {
                         <button
                             onClick={() => navigate("profile")}
                             className={`w-full rounded-lg px-4 py-3 text-left text-sm font-medium transition ${page === "profile"
-                                    ? "bg-white text-slate-900"
-                                    : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                                ? "bg-white text-slate-900"
+                                : "text-slate-300 hover:bg-slate-800 hover:text-white"
                                 }`}
                         >
                             Profile
@@ -220,7 +220,7 @@ function AdminContent() {
             </aside>
 
             {/* Main Content */}
-            <main className="min-w-0 lg:ml-64">
+            <main className="min-w-0 pt-[65px] lg:ml-64 lg:pt-0">
                 {page === "dashboard" && (
                     <AdminDashboard />
                 )}
