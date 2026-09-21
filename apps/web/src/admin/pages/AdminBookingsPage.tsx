@@ -330,8 +330,162 @@ function AdminBookingsPage() {
       </div>
 
       {/* Table */}
-      <div className="overflow-hidden rounded-xl bg-white shadow-sm">
+      <div className="hidden overflow-hidden rounded-xl bg-white shadow-sm md:block">
         <div className="overflow-x-auto">
+          {/* Mobile Booking Cards */}
+          <div className="space-y-4 md:hidden">
+            {filteredBookings.map((booking) => (
+              <div
+                key={booking.id}
+                className="rounded-xl bg-white p-4 shadow-sm"
+              >
+                {/* Header */}
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="font-semibold text-slate-900">
+                      Booking #{booking.id}
+                    </p>
+
+                    <p className="mt-1 text-xs text-slate-500">
+                      {new Date(booking.createdAt).toLocaleString()}
+                    </p>
+                  </div>
+
+                  <span
+                    className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold ${booking.status === "CONFIRMED"
+                      ? "bg-green-100 text-green-700"
+                      : booking.status === "CANCELLED"
+                        ? "bg-red-100 text-red-700"
+                        : booking.status === "EXPIRED"
+                          ? "bg-slate-200 text-slate-600"
+                          : "bg-yellow-100 text-yellow-700"
+                      }`}
+                  >
+                    {booking.status}
+                  </span>
+                </div>
+
+                {/* Student */}
+                <div className="mt-4 border-t border-slate-100 pt-4">
+                  <p className="text-sm font-medium text-slate-900">
+                    {booking.student.name || "Unnamed Student"}
+                  </p>
+
+                  <p className="mt-1 text-sm text-slate-500">
+                    {booking.student.registrationNo}
+                  </p>
+
+                  <p className="mt-1 text-xs text-slate-400">
+                    {booking.student.course.name} •{" "}
+                    {booking.student.academicYear.name}
+                  </p>
+                </div>
+
+                {/* Booking Information */}
+                <div className="mt-4 grid grid-cols-2 gap-3 border-t border-slate-100 pt-4">
+
+                  <div>
+                    <p className="text-xs text-slate-500">
+                      Meal Date
+                    </p>
+
+                    <p className="mt-1 text-sm font-medium text-slate-900">
+                      {new Date(
+                        booking.mealDate
+                      ).toLocaleDateString()}
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="text-xs text-slate-500">
+                      Food
+                    </p>
+
+                    <span
+                      className={`mt-1 inline-block rounded-full px-2.5 py-1 text-xs font-semibold ${booking.foodType === "VEG"
+                        ? "bg-green-100 text-green-700"
+                        : "bg-red-100 text-red-700"
+                        }`}
+                    >
+                      {booking.foodType === "VEG"
+                        ? "VEG"
+                        : "NON-VEG"}
+                    </span>
+                  </div>
+
+                  <div>
+                    <p className="text-xs text-slate-500">
+                      Amount
+                    </p>
+
+                    <p className="mt-1 text-sm font-semibold text-slate-900">
+                      ₹{booking.amount}
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="text-xs text-slate-500">
+                      Payment
+                    </p>
+
+                    <span
+                      className={`mt-1 inline-block rounded-full px-2.5 py-1 text-xs font-semibold ${booking.payment?.status === "PAID"
+                        ? "bg-green-100 text-green-700"
+                        : booking.payment?.status === "FAILED"
+                          ? "bg-red-100 text-red-700"
+                          : "bg-yellow-100 text-yellow-700"
+                        }`}
+                    >
+                      {booking.payment?.status ||
+                        "NO PAYMENT"}
+                    </span>
+                  </div>
+                </div>
+
+                {/* QR */}
+                <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-4">
+                  <div>
+                    <p className="text-xs text-slate-500">
+                      QR Status
+                    </p>
+
+                    {booking.qrCode ? (
+                      <span
+                        className={`mt-1 inline-block rounded-full px-2.5 py-1 text-xs font-semibold ${booking.qrCode.redeemed
+                          ? "bg-blue-100 text-blue-700"
+                          : "bg-orange-100 text-orange-700"
+                          }`}
+                      >
+                        {booking.qrCode.redeemed
+                          ? "REDEEMED"
+                          : "PENDING"}
+                      </span>
+                    ) : (
+                      <span className="mt-1 inline-block text-xs text-slate-400">
+                        N/A
+                      </span>
+                    )}
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setSelectedBooking(booking)
+                    }
+                    className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100"
+                  >
+                    View
+                  </button>
+                </div>
+              </div>
+            ))}
+
+            {filteredBookings.length === 0 && (
+              <div className="rounded-xl bg-white px-5 py-10 text-center text-slate-500 shadow-sm">
+                No bookings match the selected filters.
+              </div>
+            )}
+          </div>
           <table className="w-full min-w-250">
 
             <thead className="border-b bg-slate-50">
@@ -424,11 +578,10 @@ function AdminBookingsPage() {
                   {/* Food */}
                   <td className="px-5 py-4">
                     <span
-                      className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                        booking.foodType === "VEG"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-red-100 text-red-700"
-                      }`}
+                      className={`rounded-full px-3 py-1 text-xs font-semibold ${booking.foodType === "VEG"
+                        ? "bg-green-100 text-green-700"
+                        : "bg-red-100 text-red-700"
+                        }`}
                     >
                       {booking.foodType === "VEG"
                         ? "VEG"
@@ -444,14 +597,13 @@ function AdminBookingsPage() {
                   {/* Payment */}
                   <td className="px-5 py-4">
                     <span
-                      className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                        booking.payment?.status === "PAID"
-                          ? "bg-green-100 text-green-700"
-                          : booking.payment?.status ===
-                              "FAILED"
-                            ? "bg-red-100 text-red-700"
-                            : "bg-yellow-100 text-yellow-700"
-                      }`}
+                      className={`rounded-full px-3 py-1 text-xs font-semibold ${booking.payment?.status === "PAID"
+                        ? "bg-green-100 text-green-700"
+                        : booking.payment?.status ===
+                          "FAILED"
+                          ? "bg-red-100 text-red-700"
+                          : "bg-yellow-100 text-yellow-700"
+                        }`}
                     >
                       {booking.payment?.status ||
                         "NO PAYMENT"}
@@ -461,15 +613,14 @@ function AdminBookingsPage() {
                   {/* Booking Status */}
                   <td className="px-5 py-4">
                     <span
-                      className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                        booking.status === "CONFIRMED"
-                          ? "bg-green-100 text-green-700"
-                          : booking.status === "CANCELLED"
-                            ? "bg-red-100 text-red-700"
-                            : booking.status === "EXPIRED"
-                              ? "bg-slate-200 text-slate-600"
-                              : "bg-yellow-100 text-yellow-700"
-                      }`}
+                      className={`rounded-full px-3 py-1 text-xs font-semibold ${booking.status === "CONFIRMED"
+                        ? "bg-green-100 text-green-700"
+                        : booking.status === "CANCELLED"
+                          ? "bg-red-100 text-red-700"
+                          : booking.status === "EXPIRED"
+                            ? "bg-slate-200 text-slate-600"
+                            : "bg-yellow-100 text-yellow-700"
+                        }`}
                     >
                       {booking.status}
                     </span>
@@ -479,11 +630,10 @@ function AdminBookingsPage() {
                   <td className="px-5 py-4">
                     {booking.qrCode ? (
                       <span
-                        className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                          booking.qrCode.redeemed
-                            ? "bg-blue-100 text-blue-700"
-                            : "bg-orange-100 text-orange-700"
-                        }`}
+                        className={`rounded-full px-3 py-1 text-xs font-semibold ${booking.qrCode.redeemed
+                          ? "bg-blue-100 text-blue-700"
+                          : "bg-orange-100 text-orange-700"
+                          }`}
                       >
                         {booking.qrCode.redeemed
                           ? "REDEEMED"
@@ -537,10 +687,10 @@ function AdminBookingsPage() {
       {selectedBooking && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
 
-          <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white shadow-xl">
+          <div className="max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white shadow-xl">
 
             {/* Modal Header */}
-            <div className="flex items-center justify-between border-b px-6 py-4">
+            <div className="flex items-start justify-between gap-3 border-b px-4 py-4 sm:px-6">
 
               <div>
                 <h2 className="text-xl font-bold text-slate-900">
@@ -565,7 +715,7 @@ function AdminBookingsPage() {
             </div>
 
             {/* Details */}
-            <div className="grid gap-6 p-6 md:grid-cols-2">
+            <div className="grid gap-5 p-4 sm:gap-6 sm:p-6 md:grid-cols-2">
 
               {/* Student */}
               <div>
@@ -698,9 +848,9 @@ function AdminBookingsPage() {
                       </span>{" "}
                       {selectedBooking.payment.paidAt
                         ? new Date(
-                            selectedBooking.payment
-                              .paidAt,
-                          ).toLocaleString()
+                          selectedBooking.payment
+                            .paidAt,
+                        ).toLocaleString()
                         : "N/A"}
                     </p>
 
@@ -736,9 +886,9 @@ function AdminBookingsPage() {
                       </span>{" "}
                       {selectedBooking.qrCode.redeemedAt
                         ? new Date(
-                            selectedBooking.qrCode
-                              .redeemedAt,
-                          ).toLocaleString()
+                          selectedBooking.qrCode
+                            .redeemedAt,
+                        ).toLocaleString()
                         : "Not redeemed"}
                     </p>
 
@@ -754,7 +904,7 @@ function AdminBookingsPage() {
             </div>
 
             {/* Modal Actions */}
-            <div className="flex justify-end gap-3 border-t px-6 py-4">
+            <div className="flex flex-col-reverse gap-2 border-t px-4 py-4 sm:flex-row sm:justify-end sm:gap-3 sm:px-6">
 
               {/* Cancel Booking */}
               {selectedBooking.status === "CONFIRMED" &&
@@ -785,12 +935,12 @@ function AdminBookingsPage() {
                             currentBookings.map(
                               (booking) =>
                                 booking.id ===
-                                selectedBooking.id
+                                  selectedBooking.id
                                   ? {
-                                      ...booking,
-                                      status:
-                                        "CANCELLED",
-                                    }
+                                    ...booking,
+                                    status:
+                                      "CANCELLED",
+                                  }
                                   : booking,
                             ),
                         );
